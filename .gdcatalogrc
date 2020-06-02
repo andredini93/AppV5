@@ -1,0 +1,7 @@
+{
+    "hostname": "https://analytics.totvs.com.br",
+    "username": "andre.dini@totvs.com.br",
+    "password": "andre123",
+    "projectId": "p25mdfc7x86riaqqzxjpqjezzpktqs5r",
+    "output": "outputFile.json"
+}

@@ -3,6 +3,31 @@
 
 /** Ionic CSS Variables **/
 :root {
+
+--totvs-toolbar-height: 46px;
+--totvs-primary: #189FC1;
+--totvs-destaque: #29b6c5;
+--totvs-primary-button-border: #08719f;
+--totvs-primary-grad-bottom: #0C93B5;
+--totvs-active-grad-bottom: #ea9b3e;
+--totvs-label-color: #778588;
+--totvs-inativo: #d2d6d7;
+--totvs-placeholder: #a4adaf;
+--totvs-label: #778588;
+--totvs-text-input: #4a5c60;
+--totvs-stacked-text: rgba(74, 92, 96, 0.75);
+
+--totvs-button-default-grad-top: #ffffff;
+--totvs-button-default-grad-bottom: #f6f7f7;
+
+--totvs-margin-default: 10px;
+--totvs-border-radius-default: 3px;
+
+--totvs-toaster-success-color: #00b28e;
+--totvs-toaster-warning-color: #ea9b3e;
+--totvs-toaster-error-color: #c64840;
+--totvs-toaster-info-color: #4a5c60;
+
   /** primary **/
   --ion-color-primary: #3880ff;
   --ion-color-primary-rgb: 56, 128, 255;

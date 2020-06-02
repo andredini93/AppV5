@@ -32,6 +32,7 @@
               }
             ],
             "styles": [
+              "node_modules/@gooddata/react-components/styles/css/main.css",
               {
                 "input": "src/theme/variables.scss"
               },
@@ -74,7 +75,8 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "app:build"
+            "browserTarget": "app:build",
+            "proxyConfig": "src/proxy.conf.js"
           },
           "configurations": {
             "production": {

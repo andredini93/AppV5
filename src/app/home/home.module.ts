@@ -5,15 +5,30 @@ import { FormsModule } from '@angular/forms';
 import { HomePage } from './home.page';
 
 import { HomePageRoutingModule } from './home-routing.module';
+import { KpiModule } from '../components/kpi/kpi.module';
+import { HttpClientModule } from '@angular/common/http';
+import { LineChartModule } from '../components/lineChart/lineChart.module';
+import { VisualizationModule } from '../components/visualization/visualization.module';
+import { VisualizationComponent } from '../components/visualization/visualization.component';
 
 
 @NgModule({
+  declarations: [
+    HomePage
+  ],
   imports: [
     CommonModule,
+    HttpClientModule,
     FormsModule,
     IonicModule,
-    HomePageRoutingModule
+    HomePageRoutingModule,
+    KpiModule,
+    LineChartModule,
+    VisualizationModule
   ],
-  declarations: [HomePage]
+  entryComponents: [
+    VisualizationComponent
+  ]
+  
 })
-export class HomePageModule {}
+export class HomeModule {}
