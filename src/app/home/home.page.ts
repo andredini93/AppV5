@@ -81,7 +81,6 @@ export class HomePage implements OnInit {
                       nomeDash: element.nomeDash,
                       uriREL: res2.visualizationWidget.content.visualization
                     };
-                    debugger
                     this.arrayDashboardKPI_RelFinal.push(ArrayTemp2);
                     console.log('Registro ' + element.nomeDash + ' inserido');
                   }              
