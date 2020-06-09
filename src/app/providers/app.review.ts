@@ -1,9 +1,9 @@
-import { AlertController } from 'ionic-angular/components/alert/alert-controller';
+import { AlertController } from '@ionic/angular';
 import { AppLaunchReview } from './app.launch-review';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AppRate } from '@ionic-native/app-rate';
-import { MingleService } from '@totvs/mobile-mingle';
+import { MingleService } from '@totvs/mingle';
 import { TranslateService } from '@ngx-translate/core';
 import { Storage } from '@ionic/storage';
 import { AppVersion } from '@ionic-native/app-version';
@@ -83,9 +83,9 @@ export class AppReviewService {
 	}
 
 	private presentAlertCtrl() {
-		this._translate.get(['APP-RATE.TITLE', 'APP-RATE.MESSAGE', 'APP-RATE.RATE', 'APP-RATE.LATER', 'APP-RATE.NO']).subscribe(msgs => {
-			let alert = this._alertCtrl.create({
-				title: msgs['APP-RATE.TITLE'],
+		this._translate.get(['APP-RATE.TITLE', 'APP-RATE.MESSAGE', 'APP-RATE.RATE', 'APP-RATE.LATER', 'APP-RATE.NO']).subscribe(async msgs => {
+			let alert = await this._alertCtrl.create({
+				header: msgs['APP-RATE.TITLE'],
 				message: msgs['APP-RATE.MESSAGE'],
 				buttons: [
 					{
@@ -112,11 +112,10 @@ export class AppReviewService {
 					}
 				]
 			});
-			let backButton = this.platform.registerBackButtonAction(() => {
-				alert.dismiss();
-				backButton();
-			}, 300);
-			alert.present();
+			this.platform.backButton.subscribeWithPriority(0,async () => {
+				await alert.dismiss();
+			});
+			await alert.present();
 		});
 	}
 

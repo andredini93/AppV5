@@ -2,7 +2,6 @@ import { LoginService } from './login-service';
 import {Observable} from 'rxjs/Rx';
 import { Injectable } from "@angular/core";
 import { SessionService } from './session-service';
-import { App } from 'ionic-angular';
 import { HttpClient, HttpHeaders, HttpResponse } from "@angular/common/http";
 import { Storage } from '@ionic/storage';
 
@@ -10,7 +9,6 @@ import { Storage } from '@ionic/storage';
 export class HttpService {
 
 	constructor(
-		private _app: App,
 		private _http: HttpClient,
 		private _loginService: LoginService,
 		private _sessionService: SessionService,

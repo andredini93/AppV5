@@ -1,8 +1,9 @@
 import { Injectable } from "@angular/core";
 import { SessionService } from './session-service';
-import { MingleService, HttpRequestOptions } from '@totvs/mobile-mingle'
+import { MingleService } from '@totvs/mingle';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import 'rxjs/add/operator/toPromise';
+import {map, startWith} from "rxjs/operators";
 
 
 
@@ -57,8 +58,9 @@ export class LoginService{
           
         })
         .flatMap((custom:any) => {
-          return this._mingleService.auth.analytics(custom.authTT, custom.userAgent, alias)
-            .map(() => custom)
+          // return this._mingleService.auth.analytics(custom.authTT, custom.userAgent, alias)
+          //   .pipe(map(() => custom));
+          return custom;
         });
     }
 

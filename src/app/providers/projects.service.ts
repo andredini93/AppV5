@@ -1,11 +1,12 @@
-import { MingleService } from '@totvs/mobile-mingle';
+import { MingleService } from '@totvs/mingle';
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import { Observable } from 'rxjs/Observable';
 
 //SERVICES
-import { HttpService } from './http.service';
-import { SessionService } from './session.service';
+import { HttpService } from './http-service';
+import { SessionService } from '../providers/session-service';
+import { flatMap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -161,14 +162,14 @@ export class ProjectsService {
             });
     }
 
-    removeProjectSettings(projectId:string){
-        return this.mingle.getUserData('projects')
-        	.flatMap((projectList: any) => {
-                projectList.projects = projectList.projects.filter(project => {
-					return project.id != projectId;
-                });
-                this.storage.set('project',null).then();
-                return this.mingle.saveUserData('projects',projectList);
-        	});
-    }
+    // removeProjectSettings(projectId:string){
+    //     return this.mingle.getUserData('projects')
+    //     	.pipe(flatMap((projectList: any) => {
+    //             projectList.projects = projectList.projects.filter(project => {
+		// 			return project.id != projectId;
+    //             });
+    //             this.storage.set('project',null).then();
+    //             return this.mingle.saveUserData('projects',projectList);
+    //     	}));
+    // }
 }

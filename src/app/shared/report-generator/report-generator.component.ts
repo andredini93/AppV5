@@ -1,11 +1,13 @@
 import { ProjectsService } from 'src/app/providers/projects.service';
 import { ReportService } from 'src/app/providers/report.service';
 import { Component, OnInit, EventEmitter, ViewChild, Output, Input, Inject, forwardRef, ElementRef } from '@angular/core';
-import { NavController, ViewController, PopoverController, Platform, ModalController, LoadingController, ActionSheetController, ToastController, NavParams } from '@ionic/angular';
+import { NavController, PopoverController, Platform, ModalController, LoadingController, ActionSheetController, ToastController, NavParams } from '@ionic/angular';
 import { HttpService } from 'src/app/providers/http-service';
 import { SessionService } from 'src/app/providers/session-service';
 import { ReportsService } from 'src/app/providers/reports.service';
 import { TranslateService } from '@ngx-translate/core';
+import { MingleService } from '@totvs/mingle';
+import { SocialSharing } from '@ionic-native/social-sharing';
 
 import * as html2canvas from 'html2canvas';
 import 'chart.piecelabel.js/build/Chart.PieceLabel.min.js';
@@ -14,6 +16,7 @@ import { PhotoLibrary } from '@ionic-native/photo-library';
 import { EmailComposer } from '@ionic-native/email-composer';
 import { UnformattedChartError } from 'src/app/erros/unformatted-chart.error';
 import { UnsupportedChartError } from 'src/app/erros/unsupported-chart.error';
+import { DashboardPage } from 'src/app/dashboard/dashboard.page';
 
 @Component({
   selector: 'sa-report',
@@ -25,7 +28,7 @@ export class ReportGeneratorComponent implements OnInit {
   @Input() report: any;
 	@Output() excluded = new EventEmitter();
 	@Output() hide = new EventEmitter();
-	@ViewChild('graph') grafico: any;
+	@ViewChild('graph',{static: true}) grafico: any;
 	private type;
 	private dataResult;
 	private series;
@@ -153,19 +156,27 @@ export class ReportGeneratorComponent implements OnInit {
 			);
 	}
 
-	private showModal() {
+	private async showModal() {
 		if (this.parsedReport.reportType && this.parsedReport.reportType === 'grid') {
 			let copy = JSON.parse(JSON.stringify(this.parsedReport));
-			let profileModal = this.modalCtrl.create(ModalTable, { reportParsed: copy });
-			profileModal.present();
+			let profileModal = await this.modalCtrl.create({
+        component: ModalTable,
+        componentProps: {
+          reportParsed: copy
+        }
+      });
+			await profileModal.present();
 		}
 	}
 
-	showPopOver(ev) {
-		let popover = this.popoverCtrl.create(PopoverPage, { ref: this });
-		popover.present({
-			ev: ev,
-		});
+	async showPopOver(ev) {
+		let popover = await this.popoverCtrl.create({
+      component: PopoverPage,
+      componentProps: {
+        ref: this
+      }
+    });
+		await popover.present();
 	}
 
 	hideReport(ev?) {
@@ -181,7 +192,7 @@ export class ReportGeneratorComponent implements OnInit {
 		//this.refresh();
 	}
 
-	showActionSheet(ev) {
+	async showActionSheet(ev) {
 
 		let buttons: Array<any> = [
 			{
@@ -292,45 +303,45 @@ export class ReportGeneratorComponent implements OnInit {
 		}
 
 
-		let actionSheet = this.actionSheetCtrl.create({
+		let actionSheet = await this.actionSheetCtrl.create({
 			buttons: buttons
 		});
 
-		actionSheet.present();
+		await actionSheet.present();
 	}
 
-	private shareViaEmail() {
+	private async shareViaEmail() {
 		this.isExporting = true;
-		let loading = this.loadingCtrl.create({});
-		loading.present();
+		const loading = await this.loadingCtrl.create({});
+		await loading.present();
 		this.scrollElement();
 		setTimeout(() => {
 			let img = document.getElementById(this.report.identifier);
 			html2canvas(img)
 				.then((canvas) => {
 					let attach = canvas.toDataURL('image/png', 1.0);
-					this.socialSharing.share(this.options['SHARE_MSG'], this.report.title, [attach]).then(() => {
+					this.socialSharing.share(this.options['SHARE_MSG'], this.report.title, [attach]).then(async () => {
 						this.mingle.registerMetric('REPORT_SHARED', { projectId: this.sessionService.projectId, projectName: this.sessionService.projectName, reportName: this.report.title });
-						loading.dismiss();
+						await loading.dismiss();
 						this.isExporting = false;
-					}).catch((err) => {
+					}).catch(async (err) => {
 						this.mingle.registerMetric('ERROR_REPORT_SHARED', { projectId: this.sessionService.projectId, projectName: this.sessionService.projectName, reportName: this.report.title });
-						loading.dismiss();
+						await loading.dismiss();
 						this.isExporting = false;
 					});
 				})
-				.catch(err => {
-					loading.dismiss();
+				.catch(async err => {
+					await loading.dismiss();
 					this.isExporting = false;
 					this.showErrorToast(this.options['PHOTO_SAVE_ERROR']);
 				});
 		}, 300);
 	}
 
-	private exportToLibrary() {
+	private async exportToLibrary() {
 		this.isExporting = true;
-		let loading = this.loadingCtrl.create({});
-		loading.present();
+		let loading = await this.loadingCtrl.create({});
+		await loading.present();
 		this.scrollElement();
 		setTimeout(() => {
 			let img = document.getElementById(this.report.identifier);
@@ -345,43 +356,39 @@ export class ReportGeneratorComponent implements OnInit {
 									this.showSuccessToast(this.options['PHOTO_SAVED'])
 									this.isExporting = false;
 								})
-								.catch(err => {
-									loading.dismiss();
+								.catch(async err => {
+									await loading.dismiss();
 									this.showErrorToast(this.options['PHOTO_SAVE_ERROR']);
 									this.isExporting = false;
 								});
 						})
-						.catch(err => {
+						.catch(async err => {
 							this.showErrorToast(this.options['PHOTO_SAVE_ERROR'])
-							loading.dismiss();
+							await loading.dismiss();
 							this.isExporting = false;
 						});
 				});
 		}, 500);
 	}
 
-	showErrorToast(msg: string) {
-		let toast = this.toastCtrl.create({
+	async showErrorToast(msg: string) {
+		let toast = await this.toastCtrl.create({
 			message: msg,
 			duration: 3000,
 			cssClass: 'error',
-			position: 'top',
-			closeButtonText: 'Ok',
-			showCloseButton: true
+			position: 'top'
 		});
-		toast.present();
+	  await toast.present();
 	}
 
-	showSuccessToast(msg: string) {
-		let toast = this.toastCtrl.create({
+	async showSuccessToast(msg: string) {
+		let toast = await this.toastCtrl.create({
 			message: msg,
 			cssClass: 'success',
 			duration: 3000,
-			position: 'top',
-			closeButtonText: 'Ok',
-			showCloseButton: true
+			position: 'top'
 		});
-		toast.present();
+		await toast.present();
 	}
 	public scrollElement() {
 		let element = document.getElementById(this.report.identifier);
@@ -468,7 +475,7 @@ export class PopoverPage {
 	private options = [];
 
 	constructor(
-		public viewCtrl: ViewController,
+    public modalCtrl: ModalController,
 		public navParams: NavParams,
 		private socialSharing: SocialSharing,
 		private reportsService: ReportsService,
@@ -482,7 +489,7 @@ export class PopoverPage {
 	}
 
 	close() {
-		this.viewCtrl.dismiss();
+		this.modalCtrl.dismiss();
 	}
 	exportGraph() {
 
@@ -523,7 +530,7 @@ export class ModalTable {
 	agrupadores;
 	totalizadores = ['avg', 'max', 'med', 'min', 'nat', 'sum'];
 
-	constructor(private translate: TranslateService, private viewController: ViewController, navParams: NavParams) {
+	constructor(private translate: TranslateService, private modalController: ModalController, navParams: NavParams) {
 		this.report = null;
 		this.tableRows = []
 		this.report = navParams.get('reportParsed');
@@ -540,7 +547,7 @@ export class ModalTable {
 	}
 
 	private closeModal() {
-		this.viewController.dismiss();
+		this.modalController.dismiss();
 	}
 
 	createTable() {

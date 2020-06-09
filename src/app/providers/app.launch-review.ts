@@ -1,7 +1,7 @@
 import { Device } from '@ionic-native/device';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { MingleService } from '@totvs/mobile-mingle';
+import { MingleService } from '@totvs/mingle';
 import { TranslateService } from '@ngx-translate/core';
 import { LaunchReview } from '@ionic-native/launch-review/ngx'
 

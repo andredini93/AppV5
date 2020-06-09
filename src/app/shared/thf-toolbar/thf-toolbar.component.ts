@@ -17,13 +17,12 @@ export class ThfToolbarComponent  implements OnInit {
 
   isRootPage: boolean;
   constructor(
-    private app:App,
     private navCtrl: NavController, 
     private modalCtrl: ModalController
   ) { }
 
   ngOnInit(){
-      this.isRootPage = !this.navCtrl.canGoBack();
+      //this.isRootPage = !this.navCtrl.canGoBack();
   }
 
   btClick(event) {

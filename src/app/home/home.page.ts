@@ -26,21 +26,21 @@ export class HomePage implements OnInit {
   }
 
   ngOnInit(): void {
-    this.PopulaKPI();  
+    //this.PopulaKPI();  
   }
 
   async PopulaKPI(){
-    const promiseA = await this._loginService.doLogin().then(() => {
-      console.log('Usuário logado');
-    });
+    // const promiseA = await this._loginService.doLogin('andre.dini@totvs.com.br','totvs123','FAST_ANALYTICS').then(() => {
+    //   console.log('Usuário logado');
+    // });
 
-    const promiseB = await this.ProcessaKPI().then(async (res) => {
-      console.log('Estou no THEN do  ProcessaKPI')
-    });
+    // const promiseB = await this.ProcessaKPI().then(async (res) => {
+    //   console.log('Estou no THEN do  ProcessaKPI')
+    // });
 
-    Promise.all([promiseA,promiseB]).then(() => {
-      this.createComponent();
-    })
+    // Promise.all([promiseA,promiseB]).then(() => {
+    //   this.createComponent();
+    // })
 
   }
   createComponent() {

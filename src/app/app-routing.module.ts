@@ -51,6 +51,10 @@ const routes: Routes = [
     path: 'select-report',
     loadChildren: () => import('./select-report/select-report.module').then( m => m.SelectReportPageModule)
   },
+  {
+    path: 'dashboard',
+    loadChildren: () => import('./dashboard/dashboard.module').then( m => m.DashboardPageModule)
+  },
 ];
 
 @NgModule({
