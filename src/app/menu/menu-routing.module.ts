@@ -6,7 +6,17 @@ import { MenuPage } from './menu.page';
 const routes: Routes = [
   {
     path: '',
-    component: MenuPage
+    component: MenuPage,
+    children: [
+      {
+        path: 'dashboard-kpi',
+        loadChildren: () => import('../dashboard-kpi/dashboard-kpi.module').then( m => m.DashboardKPIPageModule)
+      },
+      {
+        path: 'config',
+        loadChildren: () => import('../config/config.module').then( m => m.ConfigPageModule)
+      }
+    ]
   }
 ];
 

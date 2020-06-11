@@ -1,0 +1,63 @@
+MODELS -- OK --
+    KpiDash.ts    OKOK --SEM ERRO--
+    KpiReport.ts  OKOK --SEM ERRO--
+    report.ts
+ERRORS -- OK --
+    unformatted-chart.error.ts  OKOK --SEM ERRO--
+    unsupported-chart.error.ts  OKOK --SEM ERRO--
+
+
+
+
+PROVIDERS 
+    app.launch-review.ts   OKOK  --SEM ERRO--
+    app.review.ts          OKOK  --SEM ERRO-- (Platform)
+    app.service.ts         OKOK  --SEM ERRO--
+    geolocation.service.ts OKOK  --SEM ERRO--
+    http.service.ts        OKOK  --SEM ERRO-- (APP)
+    login.service.ts       OKOK  --SEM ERRO--
+    projectKPI.service.ts
+    projects.service.ts    OKOK  --SEM ERRO-- (FLATMAP)
+    report.service.ts      OKOK  --SEM ERRO--
+    reports.service.ts     OKOK  --SEM ERRO--
+    resource.ts            OKOK  --SEM ERRO--
+    session.service.ts     OKOK  --SEM ERRO--
+    storage.service.ts     OKOK  --SEM ERRO--
+
+
+
+COMPONENTS
+    thf-load           OKOK  --SEM ERRO--
+    kpi-page           OKOK  --SEM ERRO--
+    kpi-visualization  OKOK  --SEM ERRO--
+shared
+    report-generator   OKOK  --COM ERRO-- (ViewController, popover, profileModal)
+    scrollable-tabs    OKOK  --COM ERRO-- (TABS)
+    thf-toolbar        OKOK  --COM ERRO-- (NavController, APP)
+
+
+PAGES
+    dashboard       OK
+    config          OK
+    home            OK
+    login           OK
+    menu            OK
+    reload-project  OK
+    reorder-projectsOK
+    reorder-tabs    OK
+    select-app      OK
+    select-project  OK
+    select-report   OK
+
+
+
+
+DUVIDAS
+ionic2-super-tabs
+webpack-dev-server
+cordova plugin rm cordova-plugin-add-swift-support --save (Se coloco esse plugin,acusa erro do xcode. Focado para desenvolver pra IOS)
+im.ltdev.cordova.UserAgent
+webpack
+manifest.json
+
+-----------

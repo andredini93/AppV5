@@ -1,3 +1,9 @@
+Node version: v12.16.2
+
+Cordova version: 8.0.0
+
+Config.xml file: 
+
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="io.ionic.starter" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>MyApp</name>
@@ -118,6 +124,18 @@
     </plugin>
     <plugin name="im.ltdev.cordova.UserAgent" spec="https://github.com/LouisT/cordova-useragent" />
     <allow-navigation href="http://localhost:8100" sessionid="6db2c1e3" />
-    <plugin name="cordova-plugin-ionic-webview" spec="^5.0.0" />
-    <engine name="android" spec="^7.1.4" />
+    <engine name="android" spec="^6.3.0" />
 </widget>
+
+
+Plugins: 
+
+cordova-android-support-gradle-release,cordova-launch-review,cordova-plugin-actionsheet,cordova-plugin-app-version,cordova-plugin-apprate,cordova-plugin-compat,cordova-plugin-cookiemaster2,cordova-plugin-device,cordova-plugin-dialogs,cordova-plugin-email-composer,cordova-plugin-file,cordova-plugin-geolocation,cordova-plugin-globalization,cordova-plugin-inappbrowser,cordova-plugin-ionic-keyboard,cordova-plugin-nativestorage,cordova-plugin-splashscreen,cordova-plugin-statusbar,cordova-plugin-whitelist,cordova-sqlite-storage,cordova.plugins.diagnostic,im.ltdev.cordova.UserAgent
+
+Error retrieving Android platform information: 
+Android SDK is not set up properly. Make sure that the Android SDK 'tools' and 'platform-tools' directories are in the PATH variable. 
+
+Error: cmd: Command failed with exit code 1 Error output:
+'android' n�o � reconhecido como um comando interno
+ou externo, um programa oper�vel ou um arquivo em lotes.
+

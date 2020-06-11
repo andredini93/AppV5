@@ -58,7 +58,7 @@ export class LoginPage implements OnInit {
 			await this._storage.set(key, true);
 			return;
 		}
-
+    
 		this.rememberMe = shouldRemember;
   }
 
@@ -72,6 +72,7 @@ export class LoginPage implements OnInit {
 
 		this._loginService.doLogin(user, password, alias.value)
 			.flatMap(auth => {
+        debugger
 				this._mingleService.registerMetric('GOODATA_ALIAS', { alias: alias.label });
 				return this._mingleService.getUserData('projects');
 			})

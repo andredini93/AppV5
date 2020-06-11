@@ -1,7 +1,7 @@
 const PROXY_CONFIG = [
   {
     context: [
-      "/gdc"
+      "/gooddata"
 
     ],
     "changeOrigin": true,
@@ -11,7 +11,10 @@ const PROXY_CONFIG = [
     "headers": {
       "host": "https://analytics.totvs.com.br",
       "origin": null
-  },
+    },
+    "pathRewrite": {
+      "^/gooddata": ""
+    } 
   }
 ]
 

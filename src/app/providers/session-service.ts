@@ -29,7 +29,7 @@ export class SessionService{
     this._ALIAS = alias;
     //debugger
 		if (!this._platform.is('cordova')) {
-			this.SERVER = 'https://localhost:8443/'
+			this.SERVER = 'gooddata/'
 			this.userAgent = navigator.userAgent;
 		}
 		else if (alias == 'FASTANALYTICS' || alias == 'TOTVSANALYTICS') {

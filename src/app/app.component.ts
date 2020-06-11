@@ -1,4 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
+import { factory } from '@gooddata/gooddata-js';
 import { TranslateService } from '@ngx-translate/core';
 import { Platform, Config, NavController } from '@ionic/angular';
 import { StatusBar } from '@ionic-native/status-bar';
@@ -20,6 +21,7 @@ import { ProjectsService } from './providers/projects.service';
 })
 export class AppComponent {
   rootPage: any;
+  private gooddata: any;
   //@ViewChild('nav', { static:true}) nav: NavController;
   
   constructor(
@@ -65,11 +67,22 @@ export class AppComponent {
 
 		// this._statusBar.overlaysWebView(false);
 		this._statusBar.backgroundColorByName("white");
-		this._statusBar.styleDefault();
+    this._statusBar.styleDefault();
+    
+    this.gooddata = factory({ domain: 'https://localhost:4200/gooddata' });
+    this.gooddata.user.login('andre.dini@totvs.com.br', 'andre123')
+    .then((response) => {
+      console.log('Login OK', response);
+      //this.PopulaKPI();
+    })
+    .catch((apiError) => {
+      console.error('Login failed', apiError, "\n\n", apiError.responseBody);
+    });
 
 		try {
 			//verifica se o TOKEN SST e o USER_ID estão salvos e se deveria iniciar a sessão ou refazer o login
-			await this._sessionService.initSession();
+      //Esse comando causa o erro que vai parar no CATCH
+      await this._sessionService.initSession();
 			//refresh do token TT (GoodData)
 			await this._loginService.refreshToken().toPromise();
 			// Listen to mingle user sign out
@@ -79,7 +92,8 @@ export class AppComponent {
 			await this._mingleService.init();
 			this._listenMingleSignOut();
 			await this._getSavedProject();
-		} catch(error){
+    
+    } catch(error){
 			this._mingleService.auth.logout().subscribe();
 			this._sessionService.clear();
 			await this._mingleService.init();
