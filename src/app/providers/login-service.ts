@@ -56,11 +56,10 @@ export class LoginService{
             return custom;
           })
         })
-        .flatMap((custom:any) => {
-          debugger
-          return this._mingleService.auth.analytics(custom.authTT, custom.userAgent, alias)
-            .pipe(map(res => custom));
-        });
+        // .flatMap((custom:any) => {
+        //   return this._mingleService.auth.analytics(custom.authTT, custom.userAgent, alias)
+        //     .pipe(map(res => custom));
+        // });
     }
 
     refreshToken() {
@@ -71,7 +70,6 @@ export class LoginService{
                                 { headers: header, observe: 'response' })
               .map((res: HttpResponse<any>) => {
                   this._sessionService.TOKEN_TT = res.headers.get('X-GDC-AuthTT');
-                  debugger
                   this._mingleService.registerAnalyticsToken(this._sessionService.TOKEN_TT, 
                   this._sessionService.userAgent);
                   return res;

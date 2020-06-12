@@ -56,6 +56,7 @@
         "REMAKE_CONFIG": "Rehacer configuraciones",
         "REORG_TABS": "Organizar Tabulaciónes",
         "LOGOUT": "Salir",
+        "CONFIG": "Ajuste",
         "LOGOUT_TITLE": "¿Está seguro?",
         "LOGOUT_MSG": "Si se desconecta, se borrará los datos offlines.",
         "LOGOUT_CONFIRM": "Salir",

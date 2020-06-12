@@ -6,6 +6,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { HttpService } from '../providers/http-service';
 import { iterator } from 'rxjs/internal-compatibility';
 import { VisualizationComponent } from '../components/visualization/visualization.component';
+import { MenuController } from '@ionic/angular';
 
 @Component({
   selector: 'app-home',
@@ -22,10 +23,12 @@ export class HomePage implements OnInit {
   constructor(private _loginService: LoginService,
               private _httpService: HttpService,
               private resolver: ComponentFactoryResolver,
+              public menuCtrl: MenuController,
               private _sessionService: SessionService) {
   }
 
   ngOnInit(): void {
+    this.menuCtrl.enable(true);
     //this.PopulaKPI();  
   }
 

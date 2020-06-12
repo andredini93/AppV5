@@ -1,40 +1,45 @@
-<ion-content>
+<ion-content class="totvs-login">
   
-  <div class="totvs-login-title-boasVindas">
+
+  <div class="msg1">
     Boas vindas!
   </div>
-  <div class="totvs-login-title-ao-Meu-Analytics" >
+  <div class="msg2" >
     ao Meu Analytics
   </div>
-  
+    
   
 
-
-  <!-- Form -->
-  <form [formGroup]="login">
-    <div>
-				<ion-label hidden>Alias</ion-label>
-        <ion-select #alias [compareWith]="aliasCompareFn" [value]="vlrDefaultAlias">
-					<ion-select-option *ngFor="let a of aliases" [value]="a">{{ a.label }}</ion-select-option>
+  <div class="formEspaco">
+    <!-- Form -->
+    <form [formGroup]="login" class="formVisual">
+      <!--SELECT BOX-->
+      <ion-item lines="full" class="ion-no-padding">
+        <ion-select  class="ion-no-padding selectCLS"
+        #alias [compareWith]="aliasCompareFn" [value]="vlrDefaultAlias">
+          <ion-select-option *ngFor="let a of aliases" [value]="a">{{ a.label }}</ion-select-option>
         </ion-select>
-      <ion-item>
-        <ion-icon name="person-outline"></ion-icon>
+      </ion-item>          
+      <!--INPUT EMAIL-->
+      <ion-item lines="full" class="ion-no-padding">
+        <ion-icon name="person-outline" class="icon"></ion-icon>
         <ion-input
           #user
           #input
           clearInput
-          class="totvs-login-input"
+          class="totvs-login-input lembrarMe"
           formControlName="user"
           placeholder="{{ 'LOGIN.USERNAME' | translate }}"
           (keyup)="processKeyUp($event, password)"
           (input)="input.value=$event.target.value.toLowerCase()" >
         </ion-input>
       </ion-item>
-      <ion-item>
-        <ion-icon name="lock-closed-outline"></ion-icon>
+      <ion-item lines="full" class="ion-no-padding">
+        <ion-icon name="lock-closed-outline" class="icon"></ion-icon>
         <ion-input
           #password
           clearInput
+          class="lembrarMe"
           formControlName="password"
           type="password"
           placeholder="{{ 'LOGIN.PASSWORD' | translate }}"
@@ -42,26 +47,27 @@
           (keyup)="processKeyUpLogin($event, user.value,password.value, alias.value)">
         </ion-input>
       </ion-item>
-    </div>
-  </form>
+    </form>
 
-  <div>
-    <ion-item>
-      <ion-toggle slot="end" [(ngModel)]="rememberMe" (ionChange)="rememberUser(rememberMe)"></ion-toggle>
-      <ion-label >{{ 'LOGIN.REMEMBER_ME' | translate }}</ion-label>
+    <!--LEMBRAR-ME-->
+    <ion-item lines="none">
+      <ion-toggle class="lembrarMe" slot="end" [(ngModel)]="rememberMe" (ionChange)="rememberUser(rememberMe)"></ion-toggle>
+      <ion-label  class="lembrarMe">{{ 'LOGIN.REMEMBER_ME' | translate }}</ion-label>
     </ion-item>
-  </div>
 
-    <ion-button expand="block" id="loginButton" [disabled]="!login.valid"  type="submit"  (click)="doLogin(user.value, password.value, alias.value)">
+    <!--BOTAO LOGIN-->
+    <ion-button class="btnLogin" id="loginButton" [disabled]="!login.valid"  type="submit"  (click)="doLogin(user.value, password.value, alias.value)">
       {{ 'LOGIN.LOGIN' | translate }}
     </ion-button>
-  
-    <div><ion-label class="label-senha">
-      Esqueceu sua senha?
-    </ion-label>
+
+    <ion-label class="lblEsqueceuSenha">Esqueceu sua senha?</ion-label>
+    
+    <div class="ion-text-center">
+      <ion-icon class="icon-totvs" src="../../assets/totvs-logo.svg"></ion-icon>
+    </div>
   </div>
-  <div>
-    <ion-icon src="../../assets/totvs-logo.svg" class="icon-totvs"></ion-icon>
-  </div>
+    
+
   
+    
 </ion-content>

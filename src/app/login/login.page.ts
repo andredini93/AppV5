@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { LoadingController, NavController, ToastController } from '@ionic/angular';
+import { LoadingController, NavController, ToastController, MenuController } from '@ionic/angular';
 import { LoginService } from '../providers/login-service';
 import { MingleService } from '@totvs/mingle';
 import { TranslateService } from '@ngx-translate/core';
@@ -41,7 +41,8 @@ export class LoginPage implements OnInit {
 		private _navCtrl: NavController,
 		private _storage: Storage,
     private _toastCtrl: ToastController,
-		private _translateService: TranslateService
+    private _translateService: TranslateService,
+    public menuCtrl: MenuController
   ) {
     this.login = this._formBuilder.group({
 			user: ['andre.dini@totvs.com.br', Validators.required],
@@ -52,6 +53,7 @@ export class LoginPage implements OnInit {
   }
 
   async ngOnInit() {
+    this.menuCtrl.enable(false);
     let key = 'rememberMe';
 		let shouldRemember = await this._storage.get(key);
 		if (shouldRemember == null || shouldRemember == undefined) {
@@ -71,21 +73,22 @@ export class LoginPage implements OnInit {
 		await loader.present();
 
 		this._loginService.doLogin(user, password, alias.value)
-			.flatMap(auth => {
-        debugger
-				this._mingleService.registerMetric('GOODATA_ALIAS', { alias: alias.label });
-				return this._mingleService.getUserData('projects');
-			})
+			// .flatMap(auth => {
+			// 	this._mingleService.registerMetric('GOODATA_ALIAS', { alias: alias.label });
+			// 	return this._mingleService.getUserData('projects');
+			// })
 			.subscribe(async projects => {
-				if (Object.keys(projects).length === 0 || projects['projects'].length === 0) {
-          //this._navCtrl.setRoot(ConfigPage);
-          this._navCtrl.navigateForward(['/ConfigPage']);
+				// if (Object.keys(projects).length === 0 || projects['projects'].length === 0) {
+        //   //this._navCtrl.setRoot(ConfigPage);
+        //   this._navCtrl.navigateForward(['/ConfigPage']);
           
-				} else {
-          //this._navCtrl.setRoot(ReloadProject);
-          this._navCtrl.navigateForward(['/ReloadProject']);
-				}
-				await loader.dismiss();
+				// } else {
+        //   //this._navCtrl.setRoot(ReloadProject);
+        //   this._navCtrl.navigateForward(['/ReloadProject']);
+				// }
+        await loader.dismiss();
+        this._navCtrl.navigateRoot(['/home']);
+        
 			},
 				async (authError) => {
           console.log(authError);

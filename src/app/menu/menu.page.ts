@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router, RouterEvent } from '@angular/router';
 
 @Component({
   selector: 'app-menu',
@@ -7,7 +8,24 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MenuPage implements OnInit {
 
-  constructor() { }
+  activePath  = '';
+
+  pages = [
+    {
+      name: 'Dashboards KPI',
+      path: '/menu/dashboard-kpi'
+    },
+    {
+      name: 'Config',
+      path: '/menu/config'
+    }
+  ]
+
+  constructor(private router: Router) {
+    this.router.events.subscribe((event: RouterEvent) => {
+      this.activePath  = event.url;
+    })
+   }
 
   ngOnInit() {
   }

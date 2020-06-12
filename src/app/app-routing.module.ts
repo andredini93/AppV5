@@ -7,25 +7,16 @@ const routes: Routes = [
     loadChildren: () => import('./home/home.module').then( m => m.HomeModule)
   },
   {
-    path: '',
-    redirectTo: 'home',
-    pathMatch: 'full'
-  },
-  {
     path: 'dashboard-kpi',
     loadChildren: () => import('./dashboard-kpi/dashboard-kpi.module').then( m => m.DashboardKPIPageModule)
   },
   {
     path: 'config',
-    loadChildren: () => import('./config/config.module').then( m => m.ConfigPageModule)
+    loadChildren: './config/config.module#ConfigPageModule'
   },
   {
     path: 'login',
     loadChildren: () => import('./login/login.module').then( m => m.LoginPageModule)
-  },
-  {
-    path: 'menu',
-    loadChildren: () => import('./menu/menu.module').then( m => m.MenuPageModule)
   },
   {
     path: 'reload-project',

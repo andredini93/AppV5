@@ -4,16 +4,22 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { ConfigPageRoutingModule } from './config-routing.module';
-
 import { ConfigPage } from './config.page';
+import { RouterModule, Routes } from '@angular/router';
+
+const routes: Routes = [
+  {
+    path: '',
+    component: ConfigPage
+  }
+];
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    ConfigPageRoutingModule
+    RouterModule.forChild(routes)
   ],
   declarations: [ConfigPage]
 })

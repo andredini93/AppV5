@@ -6,6 +6,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --ssl true --ssl-key /node_modules/browser-sync/lib/server/certs/server.key --ssl-cert /node_modules/browser-sync/lib/server/certs/server.crt",
+    "lab": "ionic serve --ssl true --ssl-key /node_modules/browser-sync/lib/server/certs/server.key --ssl-cert /node_modules/browser-sync/lib/server/certs/server.crt --lab",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
@@ -42,6 +43,7 @@
     "@ionic-native/status-bar": "^4.20.0",
     "@ionic-native/user-agent": "^4.9.2",
     "@ionic/angular": "^5.0.0",
+    "@ionic/lab": "^1.0.19",
     "@ionic/storage": "^2.1.3",
     "@ngx-translate/core": "^9.1.1",
     "@ngx-translate/http-loader": "^2.0.1",
@@ -108,7 +110,6 @@
     "@angular/compiler-cli": "~8.2.14",
     "@angular/language-service": "~8.2.14",
     "@ionic/angular-toolkit": "^2.1.1",
-    "@ionic/lab": "3.1.7",
     "@types/jasmine": "~3.3.8",
     "@types/jasminewd2": "~2.0.3",
     "@types/node": "~8.9.4",

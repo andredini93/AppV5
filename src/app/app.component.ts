@@ -13,6 +13,7 @@ import { ReloadProjectPage } from './reload-project/reload-project.page';
 import { GeolocationService } from './providers/geolocation.service';
 import { SessionService } from './providers/session-service';
 import { ProjectsService } from './providers/projects.service';
+import { Router, RouterEvent } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -20,6 +21,8 @@ import { ProjectsService } from './providers/projects.service';
   styleUrls: ['app.component.scss']
 })
 export class AppComponent {
+  activePath  = '';
+  pages = [];
   rootPage: any;
   private gooddata: any;
   //@ViewChild('nav', { static:true}) nav: NavController;
@@ -36,12 +39,19 @@ export class AppComponent {
     private _sessionService: SessionService,
     private _navCtrl: NavController,
     private _projectsService: ProjectsService,
-    private _mingleService: MingleService
+    private _mingleService: MingleService,
+    private router: Router
   ) {
+    this.router.events.subscribe((event: RouterEvent) => {
+      this.activePath  = event.url;
+    })
     this.initializeApp();
   }
 
-  async initializeApp() {
+  async initializeApp() {    
+
+    await this._platform.ready();
+
     const config = new Configuration();
     config.app_identifier = '59a8c3953abca80001f0200c';
     config.environment = 'PROD';
@@ -53,9 +63,7 @@ export class AppComponent {
     config.modules.user_data = true;
     config.modules.ocr = true;
     config.modules.web = false;
-    this._mingleService.setConfiguration(config);
-
-    await this._platform.ready();
+    this._mingleService.setConfiguration(config);    
 			
 		//configura i18n
     this._geolocationService.config();
@@ -63,13 +71,28 @@ export class AppComponent {
 		this._translateService.get(['COMMOM.BACK_BUTTON'])
 			.subscribe(values => {
 				//this._config.set('ios', 'backButtonText', values['COMMOM.BACK_BUTTON']);
-			});
+      });
+      
+      this.pages = [
+        {
+          name: 'Dashboards KPI',
+          path: '/dashboard-kpi',
+          icon: 'bar-chart'
+        },
+        {
+          name: this._translateService.get(['MENU.CONFIG']).subscribe(res => {
+            return res['MENU.CONFIG'];
+          }),
+          path: '/config',
+          icon: 'settings'
+        }
+      ];
 
 		// this._statusBar.overlaysWebView(false);
 		this._statusBar.backgroundColorByName("white");
     this._statusBar.styleDefault();
     
-    this.gooddata = factory({ domain: 'https://localhost:4200/gooddata' });
+    this.gooddata = factory({ domain: 'https://localhost:8100/gooddata' });
     this.gooddata.user.login('andre.dini@totvs.com.br', 'andre123')
     .then((response) => {
       console.log('Login OK', response);
@@ -98,7 +121,7 @@ export class AppComponent {
 			this._sessionService.clear();
 			await this._mingleService.init();
       //this.rootPage = LoginPage;
-      this._navCtrl.navigateForward(['/login']);
+      this._navCtrl.navigateRoot(['/login']);
 			console.error(error);
 		} finally {
 			this._splashScreen.hide();
