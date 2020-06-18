@@ -6,27 +6,46 @@ import { IonicModule } from '@ionic/angular';
 
 import { MenuPage } from './menu.page';
 import { Routes, RouterModule } from '@angular/router';
+import { ConfigModule } from '@gooddata/gooddata-js/lib/config';
+import { ConfigPageModule } from '../config/config.module';
 
 const routes: Routes = [
   {
-    path: 'menu',
+    path: '',
     component: MenuPage,
     children: [
       {
-        path: 'config',
-        loadChildren: '../config/config.module#ConfigPageModule'
+        path: 'home',
+        loadChildren: () => import('../home/home.module').then( m => m.HomeModule)
       },
       {
         path: 'dashboard-kpi',
-        loadChildren: '../dashboard-kpi/dashboard-kpi.module#DashboardKPIPageModule'
+        loadChildren: () => import('../dashboard-kpi/dashboard-kpi.module').then( m => m.DashboardKPIPageModule)
+      },
+      {
+        path: 'dashboard',
+        loadChildren: () => import('../dashboard/dashboard.module').then( m => m.DashboardPageModule)
+      },
+      {
+        path: 'reorder-tabs',
+        loadChildren: () => import('../reorder-tabs/reorder-tabs.module').then( m => m.ReorderTabsPageModule)
+      },
+      {
+        path: 'select-project',
+        loadChildren: () => import('../select-project/select-project.module').then( m => m.SelectProjectPageModule)
+      },
+      {
+        path: 'login',
+        loadChildren: () => import('../login/login.module').then( m => m.LoginPageModule)
       }
     ]
-  },
-  {
-    path: '',
-    redirectTo: '/menu/config'
   }
-];
+  // ,
+  // {
+  //   path: '',
+  //   redirectTo: '/menu/config'
+  // }
+]
 
 @NgModule({
   imports: [

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-config',
@@ -7,9 +8,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ConfigPage implements OnInit {
 
-  constructor() { }
+  constructor(
+    private _navCtrl: NavController
+  ) { }
 
   ngOnInit() {
+  }
+
+  goToConfig(){
+    this._navCtrl.navigateForward(['/select-project']);
   }
 
 }

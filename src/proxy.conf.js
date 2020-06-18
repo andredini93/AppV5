@@ -1,6 +1,7 @@
 const PROXY_CONFIG = [
   {
     context: [
+      "/gdc",
       "/gooddata"
 
     ],

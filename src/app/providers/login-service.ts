@@ -70,8 +70,8 @@ export class LoginService{
                                 { headers: header, observe: 'response' })
               .map((res: HttpResponse<any>) => {
                   this._sessionService.TOKEN_TT = res.headers.get('X-GDC-AuthTT');
-                  this._mingleService.registerAnalyticsToken(this._sessionService.TOKEN_TT, 
-                  this._sessionService.userAgent);
+                  // this._mingleService.registerAnalyticsToken(this._sessionService.TOKEN_TT, 
+                  // this._sessionService.userAgent);
                   return res;
               }
           );
@@ -79,7 +79,7 @@ export class LoginService{
 
     public logout() {
       return Promise.all([
-        this._mingleService.auth.logout(),
+        //this._mingleService.auth.logout(),
         this._sessionService.clear()
       ]);
       }

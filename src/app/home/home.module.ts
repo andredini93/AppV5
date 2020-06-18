@@ -18,16 +18,9 @@ import { VisualizationComponent } from '../components/visualization/visualizatio
   ],
   imports: [
     CommonModule,
-    HttpClientModule,
     FormsModule,
     IonicModule,
-    HomePageRoutingModule,
-    KpiModule,
-    LineChartModule,
-    VisualizationModule
-  ],
-  entryComponents: [
-    VisualizationComponent
+    HomePageRoutingModule
   ]
   
 })

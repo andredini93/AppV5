@@ -37,12 +37,12 @@ export class LoginPage implements OnInit {
 		private _formBuilder: FormBuilder,
 		private _loadingCtrl: LoadingController,
 		private _loginService: LoginService,
-		private _mingleService: MingleService,
+    private _mingleService: MingleService,
+    private _menuCtrl: MenuController,
 		private _navCtrl: NavController,
 		private _storage: Storage,
     private _toastCtrl: ToastController,
-    private _translateService: TranslateService,
-    public menuCtrl: MenuController
+    private _translateService: TranslateService
   ) {
     this.login = this._formBuilder.group({
 			user: ['andre.dini@totvs.com.br', Validators.required],
@@ -53,7 +53,7 @@ export class LoginPage implements OnInit {
   }
 
   async ngOnInit() {
-    this.menuCtrl.enable(false);
+    this._menuCtrl.enable(false);
     let key = 'rememberMe';
 		let shouldRemember = await this._storage.get(key);
 		if (shouldRemember == null || shouldRemember == undefined) {
@@ -65,6 +65,7 @@ export class LoginPage implements OnInit {
   }
 
 	public async doLogin(user: string, password: string, alias: any) {
+    //debugger
 		if (alias instanceof Array) {
 			alias = alias[0];
 		}
@@ -87,7 +88,7 @@ export class LoginPage implements OnInit {
         //   this._navCtrl.navigateForward(['/ReloadProject']);
 				// }
         await loader.dismiss();
-        this._navCtrl.navigateRoot(['/home']);
+        this._navCtrl.navigateForward(['/menu']);
         
 			},
 				async (authError) => {

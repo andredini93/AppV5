@@ -10,6 +10,7 @@ import '@gooddata/react-components/styles/css/main.css';
 interface VisualizationProps {
   projectId: string;
   uri?: string;
+  sdk;
   identifier?: string;
 }
 
@@ -23,6 +24,7 @@ export class VisualizationComponent implements OnInit, OnDestroy, OnChanges, Aft
   @Input() trendBy?: VisualizationInput.IAttribute;
   @Input() projectId: string;
   @Input() uri: string;
+  @Input() sdk;
   @Input() identifier: string;
   @Input() filters: any[];
   @Input() format: string;
@@ -41,10 +43,12 @@ export class VisualizationComponent implements OnInit, OnDestroy, OnChanges, Aft
     const {
       projectId,
       uri,
+      sdk,
       identifier
     } = this;
     return {
       projectId,
+      sdk,
       uri,
       identifier
     };

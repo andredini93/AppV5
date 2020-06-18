@@ -7,14 +7,36 @@ import { IonicModule } from '@ionic/angular';
 import { DashboardKPIPageRoutingModule } from './dashboard-kpi-routing.module';
 
 import { DashboardKPIPage } from './dashboard-kpi.page';
+import { VisualizationComponent } from '../components/visualization/visualization.component';
+import { KpiModule } from '../components/kpi/kpi.module';
+import { LineChartModule } from '../components/lineChart/lineChart.module';
+import { VisualizationModule } from '../components/visualization/visualization.module';
+import { ContainerDirective } from './container.directive';
+import { ContainerFilterDirective } from './container-filter.directive';
+import { HttpClientModule } from '@angular/common/http';
+import { AtributeFilterModule } from '../components/atribute-filter/atribute-filter.module';
+import { AtributeFilterComponent } from '../components/atribute-filter/atribute-filter.component';
 
 @NgModule({
+  declarations: [
+    DashboardKPIPage,
+    ContainerDirective,
+    ContainerFilterDirective
+  ],
   imports: [
     CommonModule,
+    HttpClientModule,
     FormsModule,
     IonicModule,
-    DashboardKPIPageRoutingModule
-  ],
-  declarations: [DashboardKPIPage]
+    DashboardKPIPageRoutingModule,
+    KpiModule,
+    LineChartModule,
+    AtributeFilterModule,
+    VisualizationModule
+  ],  
+  entryComponents: [
+    VisualizationComponent,
+    AtributeFilterComponent
+  ]
 })
 export class DashboardKPIPageModule {}

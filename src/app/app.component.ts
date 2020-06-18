@@ -21,8 +21,6 @@ import { Router, RouterEvent } from '@angular/router';
   styleUrls: ['app.component.scss']
 })
 export class AppComponent {
-  activePath  = '';
-  pages = [];
   rootPage: any;
   private gooddata: any;
   //@ViewChild('nav', { static:true}) nav: NavController;
@@ -36,22 +34,18 @@ export class AppComponent {
     private _geolocationService: GeolocationService,
     private _translateService: TranslateService,
     private _loginService: LoginService,
-    private _sessionService: SessionService,
     private _navCtrl: NavController,
+    private _sessionService: SessionService,
     private _projectsService: ProjectsService,
     private _mingleService: MingleService,
     private router: Router
   ) {
-    this.router.events.subscribe((event: RouterEvent) => {
-      this.activePath  = event.url;
-    })
     this.initializeApp();
   }
 
   async initializeApp() {    
 
     await this._platform.ready();
-
     const config = new Configuration();
     config.app_identifier = '59a8c3953abca80001f0200c';
     config.environment = 'PROD';
@@ -73,34 +67,20 @@ export class AppComponent {
 				//this._config.set('ios', 'backButtonText', values['COMMOM.BACK_BUTTON']);
       });
       
-      this.pages = [
-        {
-          name: 'Dashboards KPI',
-          path: '/dashboard-kpi',
-          icon: 'bar-chart'
-        },
-        {
-          name: this._translateService.get(['MENU.CONFIG']).subscribe(res => {
-            return res['MENU.CONFIG'];
-          }),
-          path: '/config',
-          icon: 'settings'
-        }
-      ];
-
+      
 		// this._statusBar.overlaysWebView(false);
 		this._statusBar.backgroundColorByName("white");
     this._statusBar.styleDefault();
     
-    this.gooddata = factory({ domain: 'https://localhost:8100/gooddata' });
-    this.gooddata.user.login('andre.dini@totvs.com.br', 'andre123')
-    .then((response) => {
-      console.log('Login OK', response);
-      //this.PopulaKPI();
-    })
-    .catch((apiError) => {
-      console.error('Login failed', apiError, "\n\n", apiError.responseBody);
-    });
+    // this.gooddata = factory({ domain: 'https://localhost:4200/gooddata' });
+    // this.gooddata.user.login('andre.dini@totvs.com.br', 'andre123')
+    // .then((response) => {
+    //   console.log('Login SDF OK', response);
+    //   this._sessionService.sdkGD = this.gooddata;
+    // })
+    // .catch((apiError) => {
+    //   console.error('Login failed', apiError, "\n\n", apiError.responseBody);
+    // });
 
 		try {
 			//verifica se o TOKEN SST e o USER_ID estão salvos e se deveria iniciar a sessão ou refazer o login
@@ -121,7 +101,8 @@ export class AppComponent {
 			this._sessionService.clear();
 			await this._mingleService.init();
       //this.rootPage = LoginPage;
-      this._navCtrl.navigateRoot(['/login']);
+      this._sessionService.FirstPage = 'LoginPage';
+      this._navCtrl.navigateForward(['/login']);
 			console.error(error);
 		} finally {
 			this._splashScreen.hide();
@@ -134,12 +115,14 @@ export class AppComponent {
 	
 			this._sessionService.projectId = project.id;
 			this._sessionService.projectName = project.name;
-			this.rootPage = MenuPage;
+      //this.rootPage = MenuPage;
+      this._sessionService.FirstPage = 'MenuPage';
 		} catch(error) {
 			let projects = await this._mingleService.getUserData('projects').toPromise();
 
 			if (Object.keys(projects).length === 0 || projects['projects'].length === 0) {
-				this.rootPage = ConfigPage;
+        //this.rootPage = ConfigPage;
+        this._sessionService.FirstPage
 			} else {
 				this.rootPage = ReloadProjectPage;
 			}

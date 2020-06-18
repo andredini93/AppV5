@@ -10,7 +10,7 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { HomeModule } from './home/home.module';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { LoginPageModule } from './login/login.module';
 import { MingleService } from '@totvs/mingle';
 import { Storage } from '@ionic/storage';
@@ -38,8 +38,8 @@ export function createTranslateLoader(http: HttpClient) {
 				useFactory: createTranslateLoader,
 				deps: [HttpClient]
 			}
-		}),
-    HomeModule,
+    }),
+    HttpClientModule,
     LoginPageModule
   ],
   providers: [

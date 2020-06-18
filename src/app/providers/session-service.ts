@@ -1,6 +1,6 @@
 import { Injectable, EventEmitter } from "@angular/core";
 import { Platform } from "@ionic/angular";
-import { DashboardKPI_Estru } from '../home/home.page';
+import { DashboardKPI_Estru } from '../models/KpiDash'
 import { StorageService } from './storage.service';
 import { DashboardKPI_Relatorio } from '../models/KpiReport';
 
@@ -15,9 +15,11 @@ export class SessionService{
 	  public projectName: string;
     public userAgent: string = '';
     public TOKEN_TT: string = '';
+    public sdkGD: any;
     public DashsKPI: DashboardKPI_Estru[] = [];
     public KPIrelFinal: DashboardKPI_Relatorio[] = [];
-    public ID_PROFILE: string = ''; 
+    public ID_PROFILE: string = '';
+    public FirstPage: string = '';
     public infoDash: any[] = [];
     
     private _ALIAS;
