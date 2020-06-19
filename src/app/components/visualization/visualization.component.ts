@@ -16,9 +16,9 @@ interface VisualizationProps {
 
 @Component({
   selector: 'app-visualization',
-  templateUrl: './visualization.component.html'
+  templateUrl: './visualization.component.html',
+  styleUrls: ['./visualization.component.scss'],
 })
-
 export class VisualizationComponent implements OnInit, OnDestroy, OnChanges, AfterViewInit {
   @Input() measures: VisualizationInput.AttributeOrMeasure[];
   @Input() trendBy?: VisualizationInput.IAttribute;

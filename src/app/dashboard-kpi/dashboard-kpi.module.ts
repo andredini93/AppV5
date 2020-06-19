@@ -11,17 +11,13 @@ import { VisualizationComponent } from '../components/visualization/visualizatio
 import { KpiModule } from '../components/kpi/kpi.module';
 import { LineChartModule } from '../components/lineChart/lineChart.module';
 import { VisualizationModule } from '../components/visualization/visualization.module';
-import { ContainerDirective } from './container.directive';
-import { ContainerFilterDirective } from './container-filter.directive';
 import { HttpClientModule } from '@angular/common/http';
 import { AtributeFilterModule } from '../components/atribute-filter/atribute-filter.module';
 import { AtributeFilterComponent } from '../components/atribute-filter/atribute-filter.component';
 
 @NgModule({
   declarations: [
-    DashboardKPIPage,
-    ContainerDirective,
-    ContainerFilterDirective
+    DashboardKPIPage
   ],
   imports: [
     CommonModule,

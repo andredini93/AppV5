@@ -9,23 +9,28 @@ interface AtributeFilterProps {
   projectId?: string;
   identifier?: string;
   onApply?: any;
+  uri?: any;
   sdk;
   onApplyWithFilterDefinition;
   filter?: any;
+  fullscreenOnMobile?: any;
 }
 
 @Component({
   selector: 'app-atribute-filter',
   templateUrl: './atribute-filter.component.html',
+  styleUrls: ['./atribute-filter.component.scss'],
 })
 export class AtributeFilterComponent implements OnInit, OnDestroy, OnChanges, AfterViewInit {
 
   @Input() projectId: string;
   @Input() identifier: string;
   @Input() onApply: any;
-  @Input() sdk;
+  @Input() sdk: any;
+  @Input() uri: any;
   @Input() onApplyWithFilterDefinition: any;
   @Input() filter: any;
+  @Input() fullscreenOnMobile: any;
 
 
   private rootDomID: string;
@@ -42,16 +47,20 @@ export class AtributeFilterComponent implements OnInit, OnDestroy, OnChanges, Af
       identifier,
       onApply,
       sdk,
+      uri,
       onApplyWithFilterDefinition,
-      filter
+      filter,
+      fullscreenOnMobile
     } = this;
     return {
       projectId,
       identifier,
       onApply,
       sdk,
+      uri,
       onApplyWithFilterDefinition,
-      filter
+      filter,
+      fullscreenOnMobile
     };
   }
 

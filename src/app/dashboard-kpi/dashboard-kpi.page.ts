@@ -11,8 +11,6 @@ import { HttpService } from '../providers/http-service';
 import { factory } from '@gooddata/gooddata-js';
 import { VisualizationInput, AFM } from "@gooddata/typings";
 import { Model } from '@gooddata/react-components';
-import { ContainerFilterDirective } from './container-filter.directive';
-import { ContainerDirective } from './container.directive';
 import { AtributeFilterComponent } from '../components/atribute-filter/atribute-filter.component';
 
 @Component({
@@ -24,14 +22,15 @@ export class DashboardKPIPage implements OnInit {
 
   private URL_: any;
   private gooddata: any;
-  public filterValue: AFM.ExtendedFilter[]; 
+  public filterValue: AFM.ExtendedFilter[] = []; 
   private arrayDashboardKPI:DashboardKPI_Estru[] = [];
   private arrayDashboardKPI_RelFinal:DashboardKPI_Relatorio[] = [];
   
-  @ViewChild(ContainerFilterDirective, { static: true }) containerFilter: ContainerFilterDirective;
-  @ViewChild(ContainerDirective, { static: true }) container: ContainerDirective;
+  @ViewChild('conponentFilterContainer', { read: ViewContainerRef ,static: true }) containerFilter: ViewContainerRef;
+  @ViewChild('conponentContainer', { read: ViewContainerRef ,static: true }) containerComponent: ViewContainerRef;
   public compRefVisual: ComponentRef<VisualizationComponent>;
   public compRefFilter: ComponentRef<AtributeFilterComponent>;
+  componentRef: any;
   public locationResortUri: string = '/gdc/md/p25mdfc7x86riaqqzxjpqjezzpktqs5r/obj/590';
 
   constructor(private _sanitizer: DomSanitizer,
@@ -40,10 +39,10 @@ export class DashboardKPIPage implements OnInit {
               private componentFactoryResolver: ComponentFactoryResolver,
               private _sessionService: SessionService) { 
 
-    this.filterValue = [
-      Model.negativeAttributeFilter('label.filial.codigodafilial', []),
-      Model.negativeAttributeFilter('label.csv_comprascarteira.bk_condicao_de_pagamento', [])
-    ];
+    // this.filterValue = [
+    //   Model.negativeAttributeFilter('label.filial.codigodafilial', []),
+    //   Model.negativeAttributeFilter('label.csv_comprascarteira.bk_condicao_de_pagamento', [])
+    // ];
   }
 
   ngOnInit() {
@@ -81,13 +80,14 @@ export class DashboardKPIPage implements OnInit {
     if (!filterItems.length && isPositiveFilter) {
         console.log('The filter must have at least one item selected');
     } else {
-      //debugger      
+      debugger      
       this.filterValue = [filter];
       this.createComponent();
     }
   };
 
   filterPositiveAttribute(filter) {
+    debugger
     const filters = [
         {
             positiveAttributeFilter: {
@@ -121,56 +121,60 @@ export class DashboardKPIPage implements OnInit {
 
   async PopulaKPI(){
 
-    const promiseB = await this.ProcessaKPI().then(async (res) => {
-      console.log('Estou no THEN do  ProcessaKPI')
-      this.createFilter();
-      this.createComponent();
+    // const promiseFiltro = await this.ProcessaFiltro().then(async (res) => {
+    //   console.log('Processa Filtro Finalizado');
+    // });
+
+    const promiseComponente = await this.ProcessaComponente().then(async (res) => {
+      console.log('Processa Componente Finalizado');
     });
 
-    // Promise.all([promiseB]).then(() => {
-    //   this.createFilter;      
-    // })
+    Promise.all([promiseComponente]).then(() => {
+      this.createFilter();
+      //this.createComponent();      
+    })
 
   }
 
   createFilter(){
-    const viewContainerRef = this.containerFilter.viewContainerRef;
-
     const factory2 = this.componentFactoryResolver.resolveComponentFactory(AtributeFilterComponent);
-    this.compRefFilter = viewContainerRef.createComponent(factory2);
-    this.compRefFilter.instance.projectId = "p25mdfc7x86riaqqzxjpqjezzpktqs5r";
-    this.compRefFilter.instance.filter = this.filterValue[0];
-    this.compRefFilter.instance.onApply = this.onApply;
-    this.compRefFilter.instance.onApplyWithFilterDefinition = this.onApplyWithFilterDefinition;
-    this.compRefFilter.instance.sdk = this.gooddata;
+
+    this.componentRef = this.containerFilter.createComponent(factory2);
+    this.componentRef.instance.projectId = "p25mdfc7x86riaqqzxjpqjezzpktqs5r";
+    this.componentRef.instance.filter = this.filterValue[0];
+    this.componentRef.instance.onApply = this.onApply;
+    this.componentRef.instance.onApplyWithFilterDefinition = this.onApplyWithFilterDefinition;
+    this.componentRef.instance.sdk = this.gooddata;
+    this.componentRef.instancefullscreenOnMobile = true;
 
 
-    this.compRefFilter = viewContainerRef.createComponent(factory2);
-    this.compRefFilter.instance.projectId = "p25mdfc7x86riaqqzxjpqjezzpktqs5r";
-    this.compRefFilter.instance.filter = this.filterValue[1];
-    this.compRefFilter.instance.onApply = this.onApply;
-    this.compRefFilter.instance.onApplyWithFilterDefinition = this.onApplyWithFilterDefinition;
-    this.compRefFilter.instance.sdk = this.gooddata;
+    this.componentRef = this.containerFilter.createComponent(factory2);
+    //this.componentRef.instance.projectId = "p25mdfc7x86riaqqzxjpqjezzpktqs5r";
+    //this.componentRef.instance.filter = this.filterValue[1];
+    this.componentRef.instance.uri = "/gdc/md/p25mdfc7x86riaqqzxjpqjezzpktqs5r/obj/590";
+    this.componentRef.instance.onApply = this.onApply;
+    this.componentRef.instance.onApplyWithFilterDefinition = this.onApplyWithFilterDefinition;
+    this.componentRef.instance.sdk = this.gooddata;
+    this.componentRef.instancefullscreenOnMobile = true;
 
     this.createComponent();
   }
 
   createComponent() {
-      const viewContainerRef = this.container.viewContainerRef;
-      viewContainerRef.clear(); 
+    this.containerComponent.clear(); 
       const componentFactory = this.componentFactoryResolver.resolveComponentFactory(VisualizationComponent);
       
       for (const iterator of this.arrayDashboardKPI_RelFinal) {
-          this.compRefVisual = viewContainerRef.createComponent(componentFactory);
-          (<VisualizationComponent>this.compRefVisual.instance).sdk = this.gooddata;
-          (<VisualizationComponent>this.compRefVisual.instance).projectId = iterator.projectId;
-          (<VisualizationComponent>this.compRefVisual.instance).uri = iterator.uriREL;
-          (<VisualizationComponent>this.compRefVisual.instance).filters = this.filterValue;
+          this.componentRef = this.containerComponent.createComponent(componentFactory);
+          (<VisualizationComponent>this.componentRef.instance).sdk = this.gooddata;
+          (<VisualizationComponent>this.componentRef.instance).projectId = iterator.projectId;
+          (<VisualizationComponent>this.componentRef.instance).uri = iterator.uriREL;
+          (<VisualizationComponent>this.componentRef.instance).filters = this.filterValue;
       }
   }
 
-  async ProcessaKPI(){    
-    // 1º
+  async ProcessaFiltro(){    
+    // 1º Busco as informações dos Dashboards.
     await this._httpService.get( 'gdc/md/p25mdfc7x86riaqqzxjpqjezzpktqs5r/query/analyticaldashboard', {})
     .toPromise().then(async (res:any) => {
       res.query.entries.forEach((element:any) => {
@@ -180,12 +184,52 @@ export class DashboardKPIPage implements OnInit {
         console.log('Preenchi o arrayDashboard');
       });
       
+      //Para cada Dashboard.....
       for await (let element of this.arrayDashboardKPI){
+          //Busco a Primeira informação do Relatório
           await this._httpService.get(element.linkFoward).toPromise().then(async (res: any) => {
             console.log(element.linkFoward);
+
+            //3º Pego as informações para montar o VISUALIZATION
+            await this._httpService.get(res.analyticalDashboard.content.filterContext).toPromise().then(async (res2: any) => {
+                if(res2.kpi == undefined){
+                  let ArrayTemp2: DashboardKPI_Relatorio = {
+                    projectId: 'p25mdfc7x86riaqqzxjpqjezzpktqs5r',
+                    idDash: element.idDash,
+                    nomeDash: element.nomeDash,
+                    uriREL: res2.visualizationWidget.content.visualization
+                  };
+                  this.arrayDashboardKPI_RelFinal.push(ArrayTemp2);
+                  console.log('Registro ' + element.nomeDash + ' inserido');
+                }              
+            });
+          });
+      }
+    });
+    //return this.arrayDashboardKPI_RelFinal;
+  }
+
+  async ProcessaComponente(){    
+    // 1º Busco as informações dos Dashboards.
+    await this._httpService.get( 'gdc/md/p25mdfc7x86riaqqzxjpqjezzpktqs5r/query/analyticaldashboard', {})
+    .toPromise().then(async (res:any) => {
+      res.query.entries.forEach((element:any) => {
+        this.arrayDashboardKPI.push({
+          idDash: element.identifier,nomeDash: element.title,linkFoward: element.link
+        });
+        console.log('Preenchi o arrayDashboard');
+      });
+      
+      //Para cada Dashboard.....
+      for await (let element of this.arrayDashboardKPI){
+          //Busco a Primeira informação do Relatório
+          await this._httpService.get(element.linkFoward).toPromise().then(async (res: any) => {
+            console.log(element.linkFoward);
+
+            //Para cada Relatório
             for await (const iterator of res.analyticalDashboard.content.widgets) {
           
-              //3º
+              //3º Pego as informações para montar o VISUALIZATION
               await this._httpService.get(iterator).toPromise().then(async (res2: any) => {
                   if(res2.kpi == undefined){
                     let ArrayTemp2: DashboardKPI_Relatorio = {
