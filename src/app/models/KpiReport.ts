@@ -1,4 +1,4 @@
-export class DashboardKPI_Relatorio {
+export class KpiReport {
   projectId: string;
   idDash: string;
   nomeDash: string;

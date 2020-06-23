@@ -6,6 +6,8 @@ import { MingleService } from '@totvs/mingle';
 import { TranslateService } from '@ngx-translate/core';
 import { ConfigPage } from '../config/config.page';
 import { Storage } from '@ionic/storage'
+import { factory } from '@gooddata/gooddata-js';
+import { SessionService } from '../providers/session-service';
 
 @Component({
   selector: 'app-login',
@@ -36,7 +38,8 @@ export class LoginPage implements OnInit {
   constructor(
 		private _formBuilder: FormBuilder,
 		private _loadingCtrl: LoadingController,
-		private _loginService: LoginService,
+    private _loginService: LoginService,
+    private _sessionService: SessionService,
     private _mingleService: MingleService,
     private _menuCtrl: MenuController,
 		private _navCtrl: NavController,
@@ -73,7 +76,18 @@ export class LoginPage implements OnInit {
 		let loader = await this._loadingCtrl.create({});
 		await loader.present();
 
-		this._loginService.doLogin(user, password, alias.value)
+    this._loginService.doLogin(user, password, alias.value)
+      .map(() => {
+        this._sessionService.sdkGD = factory({ domain: 'https://localhost:4200' });
+        this._sessionService.sdkGD.user.login('andre.dini@totvs.com.br', 'andre123')
+        .then((response) => {
+          console.log('Login OK', response);
+        })
+        .catch((apiError) => {
+          console.error('Login failed', apiError, "\n\n", apiError.responseBody);
+          alert(apiError);
+        });
+      })
 			// .flatMap(auth => {
 			// 	this._mingleService.registerMetric('GOODATA_ALIAS', { alias: alias.label });
 			// 	return this._mingleService.getUserData('projects');

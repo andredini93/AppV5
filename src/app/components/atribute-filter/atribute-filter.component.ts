@@ -6,13 +6,10 @@ import * as uuid from 'uuid';
 import { AttributeFilter } from '@gooddata/react-components';
 
 interface AtributeFilterProps {
-  projectId?: string;
-  identifier?: string;
-  onApply?: any;
-  sdk;
   uri;
+  onApply?: any;
   onApplyWithFilterDefinition;
-  filter?: any;
+  sdk;  
 }
 
 @Component({
@@ -22,13 +19,10 @@ interface AtributeFilterProps {
 })
 export class AtributeFilterComponent implements OnInit, OnDestroy, OnChanges, AfterViewInit {
 
-  @Input() projectId: string;
-  @Input() identifier: string;
-  @Input() onApply: any;
-  @Input() sdk;
   @Input() uri;
+  @Input() onApply: any;
   @Input() onApplyWithFilterDefinition: any;
-  @Input() filter: any;
+  @Input() sdk;
 
 
   private rootDomID: string;
@@ -41,22 +35,16 @@ export class AtributeFilterComponent implements OnInit, OnDestroy, OnChanges, Af
 
   protected getProps(): AtributeFilterProps {
     const {
-      projectId,
-      identifier,
-      onApply,
-      sdk,
       uri,
+      onApply,
       onApplyWithFilterDefinition,
-      filter
+      sdk
     } = this;
     return {
-      projectId,
-      identifier,
-      onApply,
-      sdk,
       uri,
+      onApply,
       onApplyWithFilterDefinition,
-      filter
+      sdk
     };
   }
 
