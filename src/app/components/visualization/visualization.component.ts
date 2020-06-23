@@ -6,12 +6,15 @@ import { VisualizationInput } from "@gooddata/typings";
 import { Component, Input, OnInit, OnDestroy, OnChanges, AfterViewInit } from '@angular/core';
 import { LineChart, Kpi, Visualization } from '@gooddata/react-components';
 import '@gooddata/react-components/styles/css/main.css';
+import { SDK } from '@gooddata/gooddata-js';
+import { AFM } from "@gooddata/typings";
 
 interface VisualizationProps {
   projectId: string;
   uri?: string;
-  sdk;
   identifier?: string;
+  sdk;
+  filters?: AFM.ExtendedFilter[];
 }
 
 @Component({
@@ -19,19 +22,24 @@ interface VisualizationProps {
   templateUrl: './visualization.component.html',
   styleUrls: ['./visualization.component.scss'],
 })
+
 export class VisualizationComponent implements OnInit, OnDestroy, OnChanges, AfterViewInit {
   @Input() measures: VisualizationInput.AttributeOrMeasure[];
   @Input() trendBy?: VisualizationInput.IAttribute;
+  @Input() sdk;
   @Input() projectId: string;
   @Input() uri: string;
-  @Input() sdk;
   @Input() identifier: string;
-  @Input() filters: any[];
+  @Input() filters: AFM.ExtendedFilter[];
   @Input() format: string;
   @Input() onLoadingChanged?: (any);
   @Input() onError?: (any);
 
   private rootDomID: string;
+
+  // constructor(private commonService: CommonService){
+  //   this.commonService.nameSubject.subscribe(res => this.name2 = res);
+  // }
 
   protected getRootDomNode() {
     const node = document.getElementById(this.rootDomID);
@@ -43,14 +51,16 @@ export class VisualizationComponent implements OnInit, OnDestroy, OnChanges, Aft
     const {
       projectId,
       uri,
+      identifier,
       sdk,
-      identifier
+      filters
     } = this;
     return {
       projectId,
-      sdk,
       uri,
-      identifier
+      identifier,
+      sdk,
+      filters
     };
   }
 
