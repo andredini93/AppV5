@@ -48,7 +48,8 @@
     "@ngx-translate/core": "^9.1.1",
     "@ngx-translate/http-loader": "^2.0.1",
     "@totvs/mingle": "0.0.1-20191121.1",
-    "@totvs/mobile-mingle": "^3.1.0",
+    "@totvs/mingle-ionic-device": "^1.0.0-20190522.1",
+    "@totvs/mingle-ionic-ocr": "^1.0.0-20190522.1",
     "@types/html2canvas": "0.0.35",
     "add": "^2.0.6",
     "angular2-moment": "^1.9.0",
@@ -67,6 +68,7 @@
     "cordova-plugin-dialogs": "^2.0.2",
     "cordova-plugin-email-composer": "^0.8.15",
     "cordova-plugin-file": "^6.0.2",
+    "cordova-plugin-file-transfer": "^1.7.1",
     "cordova-plugin-geolocation": "^4.0.2",
     "cordova-plugin-globalization": "^1.11.0",
     "cordova-plugin-inappbrowser": "^2.0.2",
@@ -93,6 +95,7 @@
     "ionicons": "^5.0.1",
     "ng2-charts": "^1.6.0",
     "ng2-dragula": "^1.5.0",
+    "npm": "^6.14.5",
     "plugin": "^0.3.3",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
@@ -170,7 +173,8 @@
         "ANDROID_SUPPORT_VERSION": "28.+"
       },
       "cordova-plugin-ionic-webview": {},
-      "cordova-plugin-wkwebview-file-xhr": {}
+      "cordova-plugin-wkwebview-file-xhr": {},
+      "cordova-plugin-file-transfer": {}
     },
     "platforms": [
       "android"

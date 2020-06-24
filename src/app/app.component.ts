@@ -14,6 +14,7 @@ import { GeolocationService } from './providers/geolocation.service';
 import { SessionService } from './providers/session-service';
 import { ProjectsService } from './providers/projects.service';
 import { Router, RouterEvent } from '@angular/router';
+import { map, mergeMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
@@ -23,6 +24,7 @@ import { Router, RouterEvent } from '@angular/router';
 export class AppComponent {
   rootPage: any;
   private gooddata: any;
+  private mingleService = new MingleService();
   //@ViewChild('nav', { static:true}) nav: NavController;
   
   constructor(
@@ -37,7 +39,6 @@ export class AppComponent {
     private _navCtrl: NavController,
     private _sessionService: SessionService,
     private _projectsService: ProjectsService,
-    private _mingleService: MingleService,
     private router: Router
   ) {
     this.initializeApp();
@@ -46,18 +47,33 @@ export class AppComponent {
   async initializeApp() {    
 
     await this._platform.ready();
+    
     const config = new Configuration();
     config.app_identifier = '59a8c3953abca80001f0200c';
-    config.environment = 'PROD';
+    config.environment = 'HOM';
     config.server = 'https://hom-mingle.totvs.com.br/api';
+    // config.app_identifier = '59c3ef78d11c330001b5e421';
+    // config.environment = 'PROD';
+    // config.server = 'https://mingle.totvs.com.br/api';
     config.modules.crashr = false;
     config.modules.usage_metrics = true;
     config.modules.gateway = true;
     config.modules.push_notification = false;
     config.modules.user_data = true;
-    config.modules.ocr = true;
-    config.modules.web = false;
-    this._mingleService.setConfiguration(config);    
+    config.modules.ocr = false;
+    config.modules.web = true;
+    this.mingleService.setConfiguration(config);
+
+    // this.mingleService.auth.login('andre.dini@totvs.com.br', 'Guiomar2438@$#*', 'TOTVS').subscribe(() => {
+    //   this.mingleService.registerMetric('APP_INIT');
+    //   console.log('Sign in ok');
+       
+    //   }, (authError) => {
+    //     console.log(authError)       
+    //   console.log('Authentication Error: User or password invalid!');
+       
+    //   }
+    // );
 			
 		//configura i18n
     this._geolocationService.config();
@@ -71,16 +87,6 @@ export class AppComponent {
 		// this._statusBar.overlaysWebView(false);
 		this._statusBar.backgroundColorByName("white");
     this._statusBar.styleDefault();
-    
-    // this.gooddata = factory({ domain: 'https://localhost:4200/gooddata' });
-    // this.gooddata.user.login('andre.dini@totvs.com.br', 'andre123')
-    // .then((response) => {
-    //   console.log('Login SDF OK', response);
-    //   this._sessionService.sdkGD = this.gooddata;
-    // })
-    // .catch((apiError) => {
-    //   console.error('Login failed', apiError, "\n\n", apiError.responseBody);
-    // });
 
 		try {
 			//verifica se o TOKEN SST e o USER_ID estão salvos e se deveria iniciar a sessão ou refazer o login
@@ -89,17 +95,24 @@ export class AppComponent {
 			//refresh do token TT (GoodData)
 			await this._loginService.refreshToken().toPromise();
 			// Listen to mingle user sign out
-			this._mingleService.registerAnalyticsToken(this._sessionService.TOKEN_TT, this._sessionService.userAgent);
+			this.mingleService.registerAnalyticsToken(this._sessionService.TOKEN_TT, this._sessionService.userAgent);
 
 			// Init mingle service
-			await this._mingleService.init();
+			await this.mingleService.init().then(res => { 
+        console.log('init' + res);
+        debugger
+      });
 			this._listenMingleSignOut();
 			await this._getSavedProject();
     
     } catch(error){
-			this._mingleService.auth.logout().subscribe();
+			this.mingleService.auth.logout().subscribe();
 			this._sessionService.clear();
-			await this._mingleService.init();
+			await this.mingleService.init().then(res => {
+        console.log(res)
+        debugger
+      });
+      
       //this.rootPage = LoginPage;
       this._sessionService.FirstPage = 'LoginPage';
       this._navCtrl.navigateForward(['/login']);
@@ -107,10 +120,14 @@ export class AppComponent {
 		} finally {
 			this._splashScreen.hide();
 		}
-  }
+ }
 
   private async _getSavedProject() {
 		try {
+      debugger
+      this.mingleService.auth.analytics(this._sessionService.TOKEN_TT, this._sessionService.userAgent, 'TOTVSANALYTICS')
+        .pipe(map(res => 'custom'));
+
 			let project = await this._projectsService.getSavedProject();
 	
 			this._sessionService.projectId = project.id;
@@ -118,7 +135,7 @@ export class AppComponent {
       //this.rootPage = MenuPage;
       this._sessionService.FirstPage = 'MenuPage';
 		} catch(error) {
-			let projects = await this._mingleService.getUserData('projects').toPromise();
+			let projects = await this.mingleService.getUserData('projects').toPromise();
 
 			if (Object.keys(projects).length === 0 || projects['projects'].length === 0) {
         //this.rootPage = ConfigPage;
@@ -138,10 +155,10 @@ export class AppComponent {
 
 	private _listenMingleSignOut() {
 		// Se Usuário do mingle está == undefined
-        this._mingleService.getUser()
+        this.mingleService.getUser()
             .subscribe(user => {
 				// Se não há dados de sessão no mingle
-				let test = this._mingleService.getSessionInfo().user;
+				let test = this.mingleService.getSessionInfo().user;
 				// Se nao há usuario nem dados de sssão = mingle já rolou o sign out
 				if (!user && !test) {
 					// Limpar os dados da sessão do good data

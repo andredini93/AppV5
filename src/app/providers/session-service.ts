@@ -94,7 +94,8 @@ export class SessionService{
 	public async initSession() {
 
 		await this._loadoutSessionValues();
-		this.setUserAgent();
+    this.setUserAgent();
+    debugger
 		if (!this._TOKEN_SST || !this._USER_ID || !this._EMAIL) {
 			throw new Error('There is no login info to update');
 		}

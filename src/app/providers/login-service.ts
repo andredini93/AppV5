@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { SessionService } from './session-service';
-import { MingleService } from '@totvs/mingle';
+import { MingleService, Configuration } from '@totvs/mingle';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import 'rxjs/add/operator/toPromise';
 import { map, mergeMap } from 'rxjs/operators';
@@ -12,11 +12,10 @@ import { map, mergeMap } from 'rxjs/operators';
 })
 export class LoginService{
 
-    
+  private mingleService = new MingleService();
 
     constructor(
-        private _http: HttpClient, 
-        private _mingleService: MingleService,
+        private _http: HttpClient,
         private _sessionService: SessionService)
         {}
 
@@ -30,6 +29,21 @@ export class LoginService{
               alias: alias
           }
       };
+
+      const config = new Configuration();
+      // config.app_identifier = '59a8c3953abca80001f0200c';
+      // config.environment = 'PROD';
+      // config.server = 'https://hom-mingle.totvs.com.br/api';
+      config.app_identifier = '59c3ef78d11c330001b5e421';
+      config.environment = 'PROD';
+      config.server = 'https://mingle.totvs.com.br/api';
+      config.modules.crashr = false;
+      config.modules.usage_metrics = true;
+      config.modules.gateway = true;
+      config.modules.push_notification = false;
+      config.modules.user_data = true;
+      config.modules.ocr = false;
+      this.mingleService.setConfiguration(config); 
     
       // Devemos assinalar o alias que está sendo usado utilizadno antes de tentar o login,
       // para que o session service defina o servidor que devera realizar o login
@@ -54,12 +68,13 @@ export class LoginService{
               userAgent: this._sessionService.userAgent
             };
             console.log('TOKEN SST' +this._sessionService.TOKEN_SST);
-            console.log('TOKEN SST' +this._sessionService.TOKEN_TT);
+            console.log('TOKEN TT' +this._sessionService.TOKEN_TT);
             return custom;
           })
         })
         // .flatMap((custom:any) => {
-        //   return this._mingleService.auth.analytics(custom.authTT, custom.userAgent, alias)
+        //   debugger
+        //   return this.mingleService.auth.analytics(custom.authTT, custom.userAgent, alias)
         //     .pipe(map(res => custom));
         // });
     }
@@ -72,8 +87,7 @@ export class LoginService{
                                 { headers: header, observe: 'response' })
               .map((res: HttpResponse<any>) => {
                   this._sessionService.TOKEN_TT = res.headers.get('X-GDC-AuthTT');
-                  // this._mingleService.registerAnalyticsToken(this._sessionService.TOKEN_TT, 
-                  // this._sessionService.userAgent);
+                   this.mingleService.registerAnalyticsToken(this._sessionService.TOKEN_TT, this._sessionService.userAgent);
                   return res;
               }
           );
