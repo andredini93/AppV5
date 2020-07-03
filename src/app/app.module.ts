@@ -16,6 +16,7 @@ import { MingleService } from '@totvs/mingle';
 import { Storage } from '@ionic/storage';
 import { StorageService } from './providers/storage.service';
 import { IonicStorageModule } from '@ionic/storage';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 export function createTranslateLoader(http: HttpClient) {
 	return new TranslateHttpLoader(http, 'assets/i18n/', '.json');

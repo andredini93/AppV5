@@ -74,8 +74,11 @@ export class LoginService{
         })
         // .flatMap((custom:any) => {
         //   debugger
-        //   return this.mingleService.auth.analytics(custom.authTT, custom.userAgent, alias)
-        //     .pipe(map(res => custom));
+        //   return this.mingleService.auth.analytics(custom.authTT, custom.userAgent, alias).subscribe(res => {
+        //     console.log('res' + res);
+        //   }, error => {
+        //     console.log('erro' + error);
+        //   })
         // });
     }
 
@@ -87,7 +90,7 @@ export class LoginService{
                                 { headers: header, observe: 'response' })
               .map((res: HttpResponse<any>) => {
                   this._sessionService.TOKEN_TT = res.headers.get('X-GDC-AuthTT');
-                   this.mingleService.registerAnalyticsToken(this._sessionService.TOKEN_TT, this._sessionService.userAgent);
+                   //this.mingleService.registerAnalyticsToken(this._sessionService.TOKEN_TT, this._sessionService.userAgent);
                   return res;
               }
           );
